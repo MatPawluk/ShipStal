@@ -1,0 +1,256 @@
+---
+// Navbar.astro
+interface NavItem {
+  name: string;
+  href: string;
+  icon?: string;
+}
+
+interface Props {
+  brandName?: string;
+  brandIcon?: string;
+  navItems?: NavItem[];
+  ctaButton?: {
+    text: string;
+    href: string;
+    icon?: string;
+  };
+}
+
+const {
+  brandName = "Shipstal",
+  brandIcon = "ri-ship-line",
+  navItems = [
+    { name: "Strona główna", href: "#hero" },
+    { name: "O nas", href: "#about" },
+    { name: "Oferta", href: "#services" },
+    { name: "Galeria", href: "#gallery" },
+    { name: "Kontakt", href: "#contact" },
+  ],
+  ctaButton = {
+    text: "Zapytaj o ofertę",
+    href: "#contact",
+    icon: "ri-mail-line"
+  }
+} = Astro.props;
+---
+
+<header class="fixed w-full bg-white shadow-md z-50 transition-all duration-300 py-3" id="navbar">
+  <div class="container mx-auto px-4 flex justify-between items-center">
+    <!-- Logo -->
+    <a href="#hero" class="text-2xl font-bold text-primary font-['Montserrat'] flex items-center logo-text">
+      <i class={`${brandIcon} mr-2 text-secondary compass-icon animate-pulse-subtle`}></i>
+      <span>{brandName}</span>
+    </a>
+    
+    <!-- Desktop Navigation -->
+    <nav class="hidden md:flex space-x-8 items-center">
+      {navItems.map((item, index) => (
+        <a 
+          href={item.href} 
+          class={`nav-link font-medium text-gray-800 hover:text-primary transition-colors ${index === 0 ? 'active' : ''}`}
+        >
+          {item.name}
+        </a>
+      ))}
+      
+      <!-- CTA Button -->
+      <a 
+        href={ctaButton.href} 
+        class="ml-4 bg-primary text-white px-6 py-2 rounded-button font-medium hover:bg-primary/90 transition-colors whitespace-nowrap flex items-center shadow-md"
+      >
+        {ctaButton.icon && <i class={`${ctaButton.icon} mr-2`}></i>}
+        {ctaButton.text}
+      </a>
+    </nav>
+    
+    <!-- Mobile Menu Toggle -->
+    <button 
+      class="md:hidden w-10 h-10 flex items-center justify-center text-gray-700 hover:text-primary transition-colors" 
+      id="mobile-menu-button" 
+      aria-label="Przełącz menu mobilne"
+    >
+      <i class="ri-menu-line ri-2x"></i>
+    </button>
+  </div>
+  
+  <!-- Mobile Navigation -->
+  <div 
+    class="md:hidden bg-white absolute w-full left-0 shadow-md hidden transition-all duration-300" 
+    id="mobile-menu"
+  >
+    <div class="container mx-auto px-4 py-3 flex flex-col space-y-4">
+      {navItems.map((item) => (
+        <a 
+          href={item.href} 
+          class="mobile-nav-link font-medium text-gray-800 hover:text-primary transition-colors py-2 border-b border-gray-100"
+        >
+          {item.name}
+        </a>
+      ))}
+      
+      <!-- Mobile CTA Button -->
+      <a 
+        href={ctaButton.href} 
+        class="bg-primary text-white px-6 py-2 rounded-button font-medium hover:bg-primary/90 transition-colors whitespace-nowrap flex items-center justify-center shadow-md"
+      >
+        {ctaButton.icon && <i class={`${ctaButton.icon} mr-2`}></i>}
+        {ctaButton.text}
+      </a>
+    </div>
+  </div>
+</header>
+
+<script>
+  // Wykonaj skrypt po załadowaniu DOM
+  document.addEventListener('DOMContentLoaded', () => {
+    // -------- SKRYPT DLA MENU MOBILNEGO --------
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    if (mobileMenuButton && mobileMenu) {
+      const mobileNavLinks = mobileMenu.querySelectorAll('.mobile-nav-link'); // Pobierz wszystkie linki w menu mobilnym
+      
+      mobileMenuButton.addEventListener('click', () => {
+        // Przełącz klasę 'hidden' lub niestandardową klasę do pokazywania/ukrywania
+        mobileMenu.classList.toggle('hidden');
+        // Opcjonalnie: Zmień ikonę przycisku
+        const menuIcon = mobileMenuButton.querySelector('i');
+        if (menuIcon) {
+          if (mobileMenu.classList.contains('hidden')) {
+            menuIcon.classList.remove('ri-close-line');
+            menuIcon.classList.add('ri-menu-line');
+          } else {
+            menuIcon.classList.remove('ri-menu-line');
+            menuIcon.classList.add('ri-close-line');
+          }
+        }
+      });
+      
+      // Zamknij menu mobilne po kliknięciu linku w menu
+      mobileNavLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          mobileMenu.classList.add('hidden');
+          // Przywróć ikonę menu
+          const menuIcon = mobileMenuButton.querySelector('i');
+          if (menuIcon) {
+            menuIcon.classList.remove('ri-close-line');
+            menuIcon.classList.add('ri-menu-line');
+          }
+        });
+      });
+    }
+    
+    // -------- SMOOTH SCROLLING DLA KOTWIC --------
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (this: HTMLAnchorElement, e) {
+        e.preventDefault();
+        
+        const targetId = this.getAttribute('href');
+        const targetElement = targetId ? document.querySelector(targetId) : null;
+        
+        if (targetElement) {
+          // Oblicz pozycję docelową, uwzględniając wysokość paska nawigacyjnego
+          const navbar = document.getElementById('navbar');
+          const navbarHeight = navbar ? navbar.offsetHeight : 0;
+          const targetPosition = targetElement.getBoundingClientRect().top + window.scrollY - navbarHeight;
+          
+          window.scrollTo({
+            top: targetPosition,
+            behavior: 'smooth',
+          });
+          
+          // Opcjonalnie: Zaktualizuj adres URL po przewinięciu (dla linków desktopowych)
+          if (!this.classList.contains('mobile-nav-link')) {
+            history.pushState(null, '', targetId);
+          }
+        }
+      });
+    });
+    
+    // -------- AKTYWNA KLASA DLA LINKÓW NAVIGACYJNYCH PRZY PRZEWIJANIU --------
+    const sections = document.querySelectorAll('main section');
+    const navLinks = document.querySelectorAll('.nav-link');
+    const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+    const navbar = document.getElementById('navbar');
+    
+    function updateActiveNavLink() {
+      const navbarHeight = navbar ? navbar.offsetHeight : 0;
+      let current = '';
+      
+      sections.forEach(section => {
+        const sectionTop = (section as HTMLElement).offsetTop - navbarHeight - 50; // Ustaw próg
+        const sectionHeight = section.clientHeight;
+        if (window.pageYOffset >= sectionTop && window.pageYOffset < sectionTop + sectionHeight) {
+          current = '#' + section.getAttribute('id');
+        }
+      });
+      
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === current) {
+          link.classList.add('active');
+        } else if (current === '' && link.getAttribute('href') === '#hero') {
+          // Jeśli jesteśmy na samej górze, ustaw "Strona główna" jako aktywną
+          link.classList.add('active');
+        }
+      });
+      
+      mobileNavLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === current) {
+          link.classList.add('active');
+        } else if (current === '' && link.getAttribute('href') === '#hero') {
+          link.classList.add('active');
+        }
+      });
+    }
+    
+    // -------- ZMIANA WYSOKOŚCI NAVBARU PRZY PRZEWIJANIU (opcjonalne) --------
+    function updateNavbarHeight() {
+      if (!navbar) return;
+      
+      const heroSection = document.getElementById('hero'); // Sekcja Hero
+      
+      if (window.scrollY > (heroSection ? heroSection.offsetHeight / 2 : 100)) {
+        // Zmniejsz navbar po przewinięciu połowy sekcji Hero lub 100px
+        navbar.classList.add('py-2'); // Mniejszy padding
+        navbar.classList.remove('py-3'); // Usunięcie większego paddingu
+      } else {
+        navbar.classList.add('py-3'); // Większy padding
+        navbar.classList.remove('py-2'); // Usunięcie mniejszego paddingu
+      }
+    }
+    
+    // Dodaj nasłuchiwanie zdarzeń przewijania i ładowania
+    window.addEventListener('scroll', () => {
+      updateActiveNavLink();
+      updateNavbarHeight();
+    });
+    
+    // Ustaw początkowy stan po załadowaniu
+    window.addEventListener('load', () => {
+      updateActiveNavLink();
+      updateNavbarHeight();
+    });
+    
+    // Również wywołaj funkcje raz po załadowaniu DOM
+    updateActiveNavLink();
+    updateNavbarHeight();
+  });
+</script>
+
+<style>
+  /* Stylizacja aktywnych linków nawigacyjnych */
+  .nav-link.active,
+  .mobile-nav-link.active {
+    color: var(--color-primary);
+    font-weight: 600;
+  }
+  
+  /* Definiowanie zmiennych kolorów, jeśli nie są już zdefiniowane w globalnym CSS */
+  :root {
+    --color-primary: #1a56db; /* Zmień na swój kolor główny */
+    --color-secondary: #2563eb; /* Zmień na swój kolor drugorzędny */
+  }
+</style>

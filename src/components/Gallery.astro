@@ -1,0 +1,769 @@
+---
+// Import komponentu Image z Astro
+import { Image } from 'astro:assets';
+
+// Dane dla galerii - 12 zdjęć
+const galleryImages = [
+	{
+		id: 1,
+		src: '/assets/images/gallery/kotwica.jpg', // Ścieżki do właściwych zdjęć
+		alt: 'Balustrady ze stali nierdzewnej na statku',
+		title: 'Balustrady okrętowe',
+		description: 'Eleganckie i trwałe balustrady spełniające normy bezpieczeństwa morskiego.',
+		width: 800,
+		height: 600,
+		class: 'tall', // Wysokie zdjęcie (można używać: 'wide', 'tall', 'big', '')
+	},
+	{
+		id: 2,
+		src: '/assets/images/gallery/kotwica.jpg', // Ścieżki do właściwych zdjęć
+		alt: 'Elementy montażowe ze stali nierdzewnej',
+		title: 'Elementy wyposażenia pokładowego',
+		description: 'Odporne na warunki atmosferyczne i słoną wodę elementy montażowe i osprzęt.',
+		width: 800,
+		height: 500,
+		class: 'wide',
+	},
+	{
+		id: 3,
+		src: '/assets/images/gallery/kotwica.jpg', // Ścieżki do właściwych zdjęć
+		alt: 'Niestandardowa konstrukcja ze stali nierdzewnej',
+		title: 'Konstrukcje specjalistyczne',
+		description: 'Projektowanie i produkcja nietypowych konstrukcji na indywidualne zamówienie.',
+		width: 800,
+		height: 800,
+		class: 'big',
+	},
+	{
+		id: 4,
+		src: '/assets/images/gallery/kotwica.jpg', // Ścieżki do właściwych zdjęć
+		alt: 'Relingi ze stali nierdzewnej',
+		title: 'Relingi i uchwyty',
+		description: 'Trwałe i estetyczne relingi dostosowane do warunków morskich.',
+		width: 800,
+		height: 600,
+		class: '',
+	},
+	{
+		id: 5,
+		src: '/assets/images/gallery/kotwica.jpg', // Ścieżki do właściwych zdjęć
+		alt: 'Elementy wyposażenia kambuza',
+		title: 'Wyposażenie kuchni okrętowych',
+		description: 'Sprzęt i elementy kuchenne ze stali nierdzewnej do zastosowań morskich.',
+		width: 800,
+		height: 500,
+		class: 'wide',
+	},
+	{
+		id: 6,
+		src: '/assets/images/gallery/kotwica.jpg', // Ścieżki do właściwych zdjęć
+		alt: 'Wyjście awaryjne ze stali nierdzewnej',
+		title: 'Systemy bezpieczeństwa',
+		description: 'Trwałe elementy systemów bezpieczeństwa zgodne z normami morskimi.',
+		width: 800,
+		height: 1000,
+		class: 'tall',
+	},
+	{
+		id: 7,
+		src: '/assets/images/gallery/kotwica.jpg', // Ścieżki do właściwych zdjęć
+		alt: 'Drabinka ze stali nierdzewnej',
+		title: 'Drabinki i podesty',
+		description: 'Wytrzymałe drabinki i podesty dostosowane do ekstremalnych warunków.',
+		width: 800,
+		height: 600,
+		class: '',
+	},
+	{
+		id: 8,
+		src: '/assets/images/gallery/kotwica.jpg', // Ścieżki do właściwych zdjęć
+		alt: 'Panel sterowania ze stali nierdzewnej',
+		title: 'Panele kontrolne',
+		description: 'Precyzyjnie wykonane panele dla urządzeń technicznych.',
+		width: 800,
+		height: 800,
+		class: 'big',
+	},
+	{
+		id: 9,
+		src: '/assets/images/gallery/kotwica.jpg', // Ścieżki do właściwych zdjęć
+		alt: 'Złącza ze stali nierdzewnej',
+		title: 'Elementy łączące',
+		description: 'Specjalistyczne złącza i elementy montażowe odporne na korozję.',
+		width: 800,
+		height: 500,
+		class: 'wide',
+	},
+	{
+		id: 10,
+		src: '/assets/images/gallery/kotwica.jpg', // Ścieżki do właściwych zdjęć
+		alt: 'Poręcze na pokładzie statku',
+		title: 'Poręcze pokładowe',
+		description: 'Ergonomiczne i bezpieczne poręcze wykonane zgodnie z normami.',
+		width: 800,
+		height: 600,
+		class: '',
+	},
+	{
+		id: 11,
+		src: '/assets/images/gallery/kotwica.jpg', // Ścieżki do właściwych zdjęć
+		alt: 'Elementy dekoracyjne ze stali nierdzewnej',
+		title: 'Detale dekoracyjne',
+		description: 'Eleganckie wykończenia i detale ze stali nierdzewnej.',
+		width: 800,
+		height: 700,
+		class: 'tall',
+	},
+	{
+		id: 12,
+		src: '/assets/images/gallery/kotwica.jpg', // Ścieżki do właściwych zdjęć
+		alt: 'Konstrukcja wsporcza ze stali nierdzewnej',
+		title: 'Konstrukcje wsporcze',
+		description: 'Solidne konstrukcje wsporcze do zastosowań morskich.',
+		width: 800,
+		height: 600,
+		class: '',
+	},
+	{
+		id: 13,
+		src: '/assets/images/gallery/kotwica.jpg', // Ścieżki do właściwych zdjęć
+		alt: 'Konstrukcja wsporcza ze stali nierdzewnej',
+		title: 'Konstrukcje wsporcze',
+		description: 'Solidne konstrukcje wsporcze do zastosowań morskich.',
+		width: 800,
+		height: 500,
+		class: '',
+	},
+];
+---
+
+<section id="gallery" class="py-20 bg-white">
+	<div class="container mx-auto px-4 text-center">
+		<div class="text-center mb-16" data-aos="fade-up">
+			<h2 class="text-3xl font-bold text-primary mb-4 wavy-underline inline-block">Nasze realizacje</h2>
+			<p class="text-gray-600 max-w-2xl mx-auto">
+				Przejrzyj wybrane projekty, które zrealizowaliśmy dla naszych klientów z przemysłu morskiego.
+			</p>
+		</div>
+
+		<!-- Gallery w stylu Pinterest -->
+		<div class="masonry-gallery" data-aos="fade-up">
+			{
+				galleryImages.map((image, index) => (
+					<div class={`masonry-item ${image.class}`} data-aos="fade-up" data-aos-delay={100 + index * 50}>
+						<div class="gallery-card">
+							<div class="gallery-image-wrapper">
+								<Image
+									src={image.src}
+									alt={image.alt}
+									width={image.width}
+									height={image.height}
+									class="gallery-image"
+									loading={'lazy'}
+									data-modal-image={`image-${image.id}`}
+								/>
+								<div class="gallery-overlay">
+									<div class="gallery-zoom">
+										<i class="ri-zoom-in-line" />
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				))
+			}
+		</div>
+	</div>
+
+	<!-- Modal dla powiększonych zdjęć -->
+	<div id="imageModal" class="image-modal">
+		<div class="modal-content">
+			<span class="modal-close">&times;</span>
+			<div class="modal-image-container">
+				<img id="modalImage" src="" alt="" class="modal-image" />
+			</div>
+			<div class="modal-caption">
+				<h3 id="modalTitle" class="text-xl font-bold mb-2 text-primary"></h3>
+				<p id="modalDescription" class="text-gray-600"></p>
+			</div>
+			<div class="modal-nav">
+				<button id="prevBtn" class="modal-nav-btn"><i class="ri-arrow-left-line"></i></button>
+				<button id="nextBtn" class="modal-nav-btn"><i class="ri-arrow-right-line"></i></button>
+			</div>
+		</div>
+	</div>
+</section>
+
+<style>
+	/* Masonry grid layout */
+	.masonry-gallery {
+		display: grid;
+		columns: 1;
+		column-gap: 1rem;
+	}
+
+	.masonry-item {
+		break-inside: avoid;
+		margin-bottom: 1rem;
+	}
+
+	.masonry-item.tall {
+		grid-row-end: span 35; /* Wyższe zdjęcia */
+	}
+
+	.masonry-item.wide {
+		grid-column-end: span 1;
+		grid-row-end: span 20;
+	}
+
+	.masonry-item.big {
+		grid-column-end: span 1;
+		grid-row-end: span 30;
+	}
+
+	@media (min-width: 640px) {
+		.masonry-gallery {
+			grid-template-columns: repeat(2, 1fr);
+		}
+
+		.masonry-item.wide {
+			grid-column-end: span 2;
+		}
+	}
+
+	@media (min-width: 768px) {
+		.masonry-gallery {
+			grid-template-columns: repeat(3, 1fr);
+		}
+	}
+
+	@media (min-width: 1024px) {
+		.masonry-gallery {
+			grid-template-columns: repeat(4, 1fr);
+		}
+	}
+
+	/* Gallery card style */
+	.gallery-card {
+		height: 100%;
+		width: 100%;
+		background-color: white;
+		border-radius: 8px;
+		overflow: hidden;
+		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+		transition:
+			transform 0.3s,
+			box-shadow 0.3s;
+	}
+
+	.gallery-card:hover {
+		transform: translateY(-5px);
+		box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+	}
+
+	.gallery-image-wrapper {
+		position: relative;
+		overflow: hidden;
+		width: 100%;
+		height: 100%;
+		padding-top: 75%; /* Proporcje zdjęcia 4:3 */
+	}
+
+	.gallery-image {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		transition: transform 0.5s;
+	}
+
+	.gallery-overlay {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-color: rgba(30, 95, 116, 0.2); /* Primary color z przezroczystością */
+		opacity: 0;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		transition: opacity 0.3s;
+	}
+
+	.gallery-card:hover .gallery-overlay {
+		opacity: 1;
+	}
+
+	.gallery-card:hover .gallery-image {
+		transform: scale(1.05);
+	}
+
+	.gallery-zoom {
+		width: 50px;
+		height: 50px;
+		border-radius: 50%;
+		background-color: white;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		cursor: pointer;
+		transform: scale(0.8);
+		transition: transform 0.3s;
+	}
+
+	.gallery-zoom:hover {
+		transform: scale(1);
+	}
+
+	.gallery-zoom i {
+		font-size: 24px;
+		color: var(--primary, #1e5f74);
+	}
+
+	.gallery-caption {
+		padding: 15px;
+		text-align: left;
+	}
+
+	/* Modal style */
+	.image-modal {
+		display: none;
+		position: fixed;
+		z-index: 1000;
+		left: 0;
+		top: 0;
+		width: 100%;
+		height: 100%;
+		overflow: auto;
+		background-color: rgba(0, 0, 0, 0.9);
+		opacity: 0;
+		transition: opacity 0.3s;
+	}
+
+	.image-modal.show {
+		opacity: 1;
+	}
+
+	.modal-content {
+		position: relative;
+		margin: auto;
+		width: 90%;
+		max-width: 1200px;
+		padding: 20px;
+		background-color: white;
+		border-radius: 8px;
+		top: 50%;
+		transform: translateY(-50%);
+	}
+
+	.modal-close {
+		position: absolute;
+		top: 15px;
+		right: 20px;
+		font-size: 30px;
+		font-weight: bold;
+		color: #777;
+		cursor: pointer;
+		z-index: 1001;
+	}
+
+	.modal-image-container {
+		width: 100%;
+		text-align: center;
+		max-height: 70vh;
+		overflow: hidden;
+	}
+
+	.modal-image {
+		width: 100%;
+		max-height: 70vh;
+		object-fit: cover;
+	}
+
+	.modal-caption {
+		margin-top: 20px;
+		text-align: center;
+	}
+
+	.modal-nav {
+		position: absolute;
+		width: 100%;
+		top: 50%;
+		left: 0;
+		transform: translateY(-50%);
+		display: flex;
+		justify-content: space-between;
+		padding: 0 20px;
+	}
+
+	.modal-nav-btn {
+		width: 50px;
+		height: 50px;
+		border-radius: 50%;
+		background-color: white;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		cursor: pointer;
+		border: none;
+		box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+		transition: transform 0.2s;
+	}
+
+	.modal-nav-btn:hover {
+		transform: scale(1.1);
+	}
+
+	.modal-nav-btn i {
+		font-size: 24px;
+		color: var(--primary, #1e5f74);
+	}
+
+	/* Efekt wody (wave effect) */
+	.water-effect::after {
+		content: '';
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		width: 300%;
+		height: 300%;
+		background-image: conic-gradient(
+			from 0deg at 50% 50%,
+			rgba(255, 255, 255, 0) 0%,
+			rgba(255, 255, 255, 0.2) 10%,
+			rgba(255, 255, 255, 0) 20%
+		);
+		opacity: 0;
+		transform: translate(-50%, -50%);
+		animation: water-ripple 4s linear infinite;
+		pointer-events: none;
+		z-index: 1;
+	}
+
+	.gallery-card:hover .water-effect::after {
+		opacity: 1;
+	}
+
+	@keyframes water-ripple {
+		0% {
+			transform: translate(-50%, -50%) rotate(0deg);
+		}
+		100% {
+			transform: translate(-50%, -50%) rotate(360deg);
+		}
+	}
+</style>
+
+<script>
+	// Uruchomienie kodu po załadowaniu DOM
+	document.addEventListener('DOMContentLoaded', function () {
+		// Dane galerii do użycia w JS
+		const galleryImages = [
+			/* Tu należy wkleić te same dane co w frontmatter (możesz też użyć JSON.stringify w frontmatter i przekazać je jako atrybuty data-*) */
+			// Przykład:
+			{
+				id: 1,
+				src: '/assets/images/gallery/kotwica.jpg', // Ścieżki do właściwych zdjęć
+				alt: 'Balustrady ze stali nierdzewnej na statku',
+				title: 'Balustrady okrętowe',
+				description: 'Eleganckie i trwałe balustrady spełniające normy bezpieczeństwa morskiego.',
+				width: 800,
+				height: 600,
+				class: 'tall', // Wysokie zdjęcie (można używać: 'wide', 'tall', 'big', '')
+			},
+			{
+				id: 2,
+				src: '/assets/images/gallery/kotwica.jpg', // Ścieżki do właściwych zdjęć
+				alt: 'Elementy montażowe ze stali nierdzewnej',
+				title: 'Elementy wyposażenia pokładowego',
+				description: 'Odporne na warunki atmosferyczne i słoną wodę elementy montażowe i osprzęt.',
+				width: 800,
+				height: 500,
+				class: 'wide',
+			},
+			{
+				id: 3,
+				src: '/assets/images/gallery/kotwica.jpg', // Ścieżki do właściwych zdjęć
+				alt: 'Niestandardowa konstrukcja ze stali nierdzewnej',
+				title: 'Konstrukcje specjalistyczne',
+				description: 'Projektowanie i produkcja nietypowych konstrukcji na indywidualne zamówienie.',
+				width: 800,
+				height: 800,
+				class: 'big',
+			},
+			{
+				id: 4,
+				src: '/assets/images/gallery/kotwica.jpg', // Ścieżki do właściwych zdjęć
+				alt: 'Relingi ze stali nierdzewnej',
+				title: 'Relingi i uchwyty',
+				description: 'Trwałe i estetyczne relingi dostosowane do warunków morskich.',
+				width: 800,
+				height: 600,
+				class: '',
+			},
+			{
+				id: 5,
+				src: '/assets/images/gallery/kotwica.jpg', // Ścieżki do właściwych zdjęć
+				alt: 'Elementy wyposażenia kambuza',
+				title: 'Wyposażenie kuchni okrętowych',
+				description: 'Sprzęt i elementy kuchenne ze stali nierdzewnej do zastosowań morskich.',
+				width: 800,
+				height: 500,
+				class: 'wide',
+			},
+			{
+				id: 6,
+				src: '/assets/images/gallery/kotwica.jpg', // Ścieżki do właściwych zdjęć
+				alt: 'Wyjście awaryjne ze stali nierdzewnej',
+				title: 'Systemy bezpieczeństwa',
+				description: 'Trwałe elementy systemów bezpieczeństwa zgodne z normami morskimi.',
+				width: 800,
+				height: 1000,
+				class: 'tall',
+			},
+			{
+				id: 7,
+				src: '/assets/images/gallery/kotwica.jpg', // Ścieżki do właściwych zdjęć
+				alt: 'Drabinka ze stali nierdzewnej',
+				title: 'Drabinki i podesty',
+				description: 'Wytrzymałe drabinki i podesty dostosowane do ekstremalnych warunków.',
+				width: 800,
+				height: 600,
+				class: '',
+			},
+			{
+				id: 8,
+				src: '/assets/images/gallery/kotwica.jpg', // Ścieżki do właściwych zdjęć
+				alt: 'Panel sterowania ze stali nierdzewnej',
+				title: 'Panele kontrolne',
+				description: 'Precyzyjnie wykonane panele dla urządzeń technicznych.',
+				width: 800,
+				height: 800,
+				class: 'big',
+			},
+			{
+				id: 9,
+				src: '/assets/images/gallery/kotwica.jpg', // Ścieżki do właściwych zdjęć
+				alt: 'Złącza ze stali nierdzewnej',
+				title: 'Elementy łączące',
+				description: 'Specjalistyczne złącza i elementy montażowe odporne na korozję.',
+				width: 800,
+				height: 500,
+				class: 'wide',
+			},
+			{
+				id: 10,
+				src: '/assets/images/gallery/kotwica.jpg', // Ścieżki do właściwych zdjęć
+				alt: 'Poręcze na pokładzie statku',
+				title: 'Poręcze pokładowe',
+				description: 'Ergonomiczne i bezpieczne poręcze wykonane zgodnie z normami.',
+				width: 800,
+				height: 600,
+				class: '',
+			},
+			{
+				id: 11,
+				src: '/assets/images/gallery/kotwica.jpg', // Ścieżki do właściwych zdjęć
+				alt: 'Elementy dekoracyjne ze stali nierdzewnej',
+				title: 'Detale dekoracyjne',
+				description: 'Eleganckie wykończenia i detale ze stali nierdzewnej.',
+				width: 800,
+				height: 700,
+				class: 'tall',
+			},
+			{
+				id: 12,
+				src: '/assets/images/gallery/kotwica.jpg', // Ścieżki do właściwych zdjęć
+				alt: 'Konstrukcja wsporcza ze stali nierdzewnej',
+				title: 'Konstrukcje wsporcze',
+				description: 'Solidne konstrukcje wsporcze do zastosowań morskich.',
+				width: 800,
+				height: 600,
+				class: '',
+			},
+			// ...reszta danych
+		];
+
+		// Masonry layout initialization - układanie elementów w stylu Pinterest
+		function resizeMasonryItems() {
+			const grid = document.querySelector('.masonry-gallery');
+			if (!grid) return;
+			const rowHeight = parseInt(window.getComputedStyle(grid).getPropertyValue('grid-auto-rows'));
+			const rowGap = parseInt(window.getComputedStyle(grid).getPropertyValue('grid-gap'));
+
+			document.querySelectorAll('.masonry-item').forEach(item => {
+				const content = item.querySelector('.gallery-card');
+				if (content) {
+					const rowSpan = Math.ceil((content.getBoundingClientRect().height + rowGap) / (rowHeight + rowGap));
+					(item as HTMLElement).style.gridRowEnd = `span ${rowSpan}`;
+				}
+
+				// Ustaw odpowiednią liczbę wierszy w zależności od wysokości zawartości
+				(item as HTMLElement).style.gridRowEnd = `span ${rowSpan}`;
+			});
+		}
+
+		// Modal initialization
+		const modal = document.getElementById('imageModal');
+		const modalImg = document.getElementById('modalImage');
+		const modalTitle = document.getElementById('modalTitle');
+		const modalDescription = document.getElementById('modalDescription');
+		const closeBtn = document.querySelector('.modal-close');
+		const prevBtn = document.getElementById('prevBtn');
+		const nextBtn = document.getElementById('nextBtn');
+
+		let currentImageIndex = 0;
+
+		// Get all gallery images
+		const galleryImageElements = document.querySelectorAll('.gallery-image');
+
+		// Obsługa kliknięcia w zdjęcie - otwieranie modala
+		galleryImageElements.forEach((img, index) => {
+			img.addEventListener('click', function () {
+				openModal(index);
+			});
+
+			// Także kliknięcie w ikonę lupy
+			const galleryCard = img.closest('.gallery-card');
+			const zoomIcon = galleryCard ? galleryCard.querySelector('.gallery-zoom') : null;
+			if (zoomIcon) {
+				zoomIcon.addEventListener('click', function () {
+					openModal(index);
+				});
+			}
+		});
+
+		// Funkcja otwierająca modal
+		function openModal(index: number) {
+			currentImageIndex = index;
+			updateModalContent();
+
+			if (modal) {
+				modal.style.display = 'block';
+			} else {
+				console.error('Modal element not found in the DOM.');
+			}
+			setTimeout(() => {
+				if (modal) {
+					modal.classList.add('show');
+				} else {
+					console.error('Modal element not found in the DOM.');
+				}
+			}, 10);
+
+			// Blokowanie przewijania body
+			document.body.style.overflow = 'hidden';
+		}
+
+		// Aktualizacja zawartości modala
+		function updateModalContent() {
+			// Pobierz ścieżkę z atrybutu src elementu Image
+			const imgElement = galleryImageElements[currentImageIndex];
+			const imgSrc = imgElement.getAttribute('src');
+			const imgAlt = imgElement.getAttribute('alt');
+
+			// Znajdź dane dla danego indeksu
+			const galleryCard = imgElement.closest('.gallery-card');
+			const title = galleryCard ? galleryCard.querySelector('h3')?.textContent : '';
+			const description = galleryCard?.querySelector('p')?.textContent || '';
+
+			if (modalImg) {
+				if (imgSrc) {
+					(modalImg as HTMLImageElement).src = imgSrc;
+				} else {
+					console.error('Image source is null.');
+				}
+				(modalImg as HTMLImageElement).alt = imgAlt ?? '';
+			}
+			if (modalTitle) {
+				modalTitle.textContent = title ?? '';
+			}
+			if (modalDescription) {
+				modalDescription.textContent = description;
+			}
+		}
+
+		// Obsługa zamykania modala
+		closeBtn.addEventListener('click', closeModal);
+		modal.addEventListener('click', function (e) {
+			if (e.target === modal) {
+				closeModal();
+			}
+		});
+
+		// Funkcja zamykająca modal
+		function closeModal() {
+			modal.classList.remove('show');
+			setTimeout(() => {
+				modal.style.display = 'none';
+			}, 300);
+
+			// Odblokowanie przewijania body
+			document.body.style.overflow = '';
+		}
+
+		// Obsługa nawigacji w modalu (poprzednie/następne zdjęcie)
+		prevBtn.addEventListener('click', function () {
+			currentImageIndex = currentImageIndex === 0 ? galleryImageElements.length - 1 : currentImageIndex - 1;
+			updateModalContent();
+		});
+
+		nextBtn.addEventListener('click', function () {
+			currentImageIndex = currentImageIndex === galleryImageElements.length - 1 ? 0 : currentImageIndex + 1;
+			updateModalContent();
+		});
+
+		// Obsługa klawiszy do nawigacji
+		document.addEventListener('keydown', function (e) {
+			if (!modal.classList.contains('show')) return;
+
+			if (e.key === 'Escape') {
+				closeModal();
+			} else if (e.key === 'ArrowLeft') {
+				prevBtn.click();
+			} else if (e.key === 'ArrowRight') {
+				nextBtn.click();
+			}
+		});
+
+		// Uruchom funkcje po załadowaniu strony i przy każdej zmianie rozmiaru okna
+		window.addEventListener('load', resizeMasonryItems);
+		window.addEventListener('resize', resizeMasonryItems);
+
+		// Dodatkowo uruchom jeszcze raz po pełnym załadowaniu obrazów
+		window.addEventListener('load', function () {
+			// Poczekaj na załadowanie wszystkich obrazów
+			const allImages = document.querySelectorAll('img');
+			let loadedImagesCount = 0;
+
+			function imageLoaded() {
+				loadedImagesCount++;
+				if (loadedImagesCount === allImages.length) {
+					// Wszystkie obrazy załadowane, odśwież layout
+					resizeMasonryItems();
+				}
+			}
+
+			// Sprawdź, czy obrazy są już załadowane lub dodaj nasłuchiwanie na zdarzenie load
+			allImages.forEach(img => {
+				if (img.complete) {
+					imageLoaded();
+				} else {
+					img.addEventListener('load', imageLoaded);
+				}
+			});
+		});
+
+		// Inicjalizacja AOS (jeśli używasz)
+		if (typeof AOS !== 'undefined') {
+			AOS.init({
+				duration: 800,
+				easing: 'ease-in-out',
+				once: true,
+			});
+		}
+	});
+</script>

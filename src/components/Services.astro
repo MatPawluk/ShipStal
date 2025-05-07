@@ -1,0 +1,78 @@
+---
+// Tutaj możesz zdefiniować zmienne i importy
+const services = [
+	{
+		icon: 'ri-tools-line',
+		title: 'Obróbka CNC',
+		desc: 'Precyzyjna obróbka stali nierdzewnej z wykorzystaniem maszyn CNC gwarantujących dokładność i powtarzalność.',
+		delay: 100,
+	},
+	{
+		icon: 'ri-scissors-cut-line',
+		title: 'Cięcie laserowe',
+		desc: 'Zaawansowane cięcie laserowe umożliwiające tworzenie złożonych detali bez dalszej obróbki.',
+		delay: 200,
+	},
+	{
+		icon: 'ri-fire-line',
+		title: 'Spawanie (TIG, MIG/MAG)',
+		desc: 'Profesjonalne spawanie stali nierdzewnej przez certyfikowanych specjalistów, odporne na korozję.',
+		delay: 300,
+	},
+	{
+		icon: 'ri-hammer-line',
+		title: 'Gięcie i formowanie',
+		desc: 'Precyzyjne gięcie i formowanie stali pozwalające uzyskać skomplikowane elementy konstrukcyjne.',
+		delay: 400,
+	},
+	{
+		icon: 'ri-brush-line',
+		title: 'Obróbka powierzchni',
+		desc: 'Szlifowanie, polerowanie i pasywacja powierzchni w celu uzyskania estetyki i odporności.',
+		delay: 500,
+	},
+	{
+		icon: 'ri-building-line',
+		title: 'Montaż konstrukcji',
+		desc: 'Składanie i montaż gotowych komponentów ze stali nierdzewnej do instalacji na jednostkach morskich.',
+		delay: 600,
+	},
+];
+---
+
+<section id="services" class="py-24 sea-bg-about">
+	<div class="container mx-auto px-4">
+		<!-- Nagłówek -->
+		<div class="text-center mb-16 max-w-2xl mx-auto" data-aos="fade-up">
+			<h2 class="text-4xl md:text-5xl font-bold mb-4 wavy-underline inline-block text-primary">Nasze specjalizacje</h2>
+			<p class="text-black text-lg">
+				Oferujemy kompleksowe usługi w zakresie produkcji i obróbki stali nierdzewnej, dostosowane do specyficznych
+				wymagań przemysłu morskiego.
+			</p>
+		</div>
+
+		<!-- Karty usług -->
+		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 text-primary">
+			{
+				services.map(service => (
+					<div
+						class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 card-hover border border-gray-100"
+						data-aos="fade-up"
+						data-aos-delay={service.delay}>
+						<div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-6 mx-auto">
+							<i class={`${service.icon} text-primary text-3xl`} />
+						</div>
+						<h3 class="text-xl font-semibold text-center text-primary mb-3">{service.title}</h3>
+						<p class="text-black text-center text-sm">{service.desc}</p>
+					</div>
+				))
+			}
+		</div>
+	</div>
+</section>
+
+<style>
+	.sea-bg-about {
+		background: linear-gradient(to bottom, #e6f2ff, #ffffff);
+	}
+</style>

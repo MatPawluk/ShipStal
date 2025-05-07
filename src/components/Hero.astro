@@ -1,0 +1,70 @@
+---
+import Image from "astro/components/Image.astro";
+import hero from "../assets/images/stalnierdzewna.jpg";
+---
+
+<section
+	id="hero"
+	class="relative pt-32 md:pt-40 pb-24 overflow-hidden bg-gradient-to-br from-white via-blue-50 to-blue-100">
+	<div class="container mx-auto px-4 flex flex-col md:flex-row items-center gap-12">
+		<!-- Text Content -->
+		<div class="max-w-xl z-10" data-aos="fade-right">
+			<h1 class="text-4xl md:text-5xl font-extrabold leading-tight text-gray-900 mb-6">
+				<span class="block">Nowoczesne</span>
+				<span class="block text-primary">rozwiązania stalowe</span>
+				<span class="block text-sea">dla branży morskiej</span>
+			</h1>
+			<p class="text-lg text-gray-600 mb-8">
+				Produkcja i projektowanie elementów ze stali nierdzewnej na najwyższym poziomie. 15 lat doświadczenia i zaufanie
+				liderów branży.
+			</p>
+			<div class="flex flex-col sm:flex-row gap-4">
+				<a
+					href="#services"
+					class="inline-block mt-8 bg-secondary text-white px-6 py-3 rounded-button font-medium hover:bg-secondary/90 transition-all duration-300 shadow-md hover:scale-105">
+					<i class="ri-arrow-right-line mr-2"></i>Poznaj ofertę
+				</a>
+				<a
+					href="#contact"
+					class="inline-block mt-8 bg-white border border-primary text-primary px-6 py-3 rounded-button font-medium hover:bg-gray-50 transition-all shadow">
+					<i class="ri-customer-service-line mr-2"></i>Skontaktuj się
+				</a>
+			</div>
+		</div>
+
+		<!-- Illustration or Image -->
+		<div class="relative w-full max-w-md md:max-w-lg z-10" data-aos="fade-left" data-aos-delay="300">
+			<div class="rounded-3xl overflow-hidden shadow-xl border border-white/30 backdrop-blur bg-white/10">
+				<Image src={hero} alt="Stal nierdzewna dla przemysłu morskiego" class="w-full h-full" loading={"eager"} />
+			</div>
+		</div>
+	</div>
+	<!-- Decorative Wave -->
+    <div class="wave wave-move absolute bottom-0 left-0 right-0 overflow-hidden leading-none rotate-180 pointer-events-none z-0">
+        <svg viewBox="0 0 1200 120" preserveAspectRatio="none" class="h-24 wave-svg">
+            <path
+                d="M0,0V46.29c47.73,22.17,104.15,29.1,158.35,17.55C284,43,426,0,576,0s292,43,417.65,63.84C1047.85,75.39,1104.27,68.46,1152,46.29V0Z">
+            </path>
+        </svg>
+    </div>
+</section>
+
+<style>
+	.wave {
+		width: 120%;
+	}
+	.wave-svg {
+		width: 120%;
+		fill: #f9fafb;
+		animation: wave-bob 6s ease-in-out infinite;
+	}
+
+	@keyframes wave-bob {
+		0%, 100% {
+			transform: translateY(0) scaleX(1);
+		}
+		50% {
+			transform: translateY(-5px) scaleX(1.02);
+		}
+	}
+</style>
