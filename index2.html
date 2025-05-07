@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shipstal - Produkcja i obróbka stali nierdzewnej dla przemysłu morskiego</title>
+    <meta name="description" content="Shipstal - profesjonalna firma specjalizująca się w produkcji i obróbce stali nierdzewnej dla przemysłu morskiego. Najwyższa jakość, terminowość i innowacyjne rozwiązania.">
+    
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: "#1a237e", // Główny kolor - granatowy
+              secondary: "#2196f3", // Kolor akcentujący - niebieski
+              darkblue: "#01579b", // Ciemniejszy niebieski
+              lightblue: "#e3f2fd", // Bardzo jasny niebieski
+              grayish: "#f9fafb" // Jasnoszary - kolor tła body
+            },
+            borderRadius: {
+              none: "0px",
+              sm: "4px",
+              DEFAULT: "8px",
+              md: "12px",
+              lg: "16px",
+              xl: "20px",
+              "2xl": "24px",
+              "3xl": "32px",
+              full: "9999px",
+              button: "8px", // Niestandardowe zaokrąglenie dla przycisków
+            },
+             animation: {
+                'spin-slow': 'spin 3s linear infinite', // Wolniejsza animacja obrotu
+                'pulse-subtle': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite', // Subtelniejsze pulsowanie
+             },
+             keyframes: {
+                pulse: { // Nadpisujemy domyślną animację pulse Tailwind
+                    '0%, 100%': { transform: 'scale(1)', opacity: '1' },
+                    '50%': { transform: 'scale(1.05)', opacity: '0.8' },
+                }
+             }
+          },
+        },
+      };
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
+
+    <style>
+        /* Definicja zmiennych CSS z kolorami Tailwind dla łatwiejszego użycia w custom CSS */
+        :root {
+            --color-primary: #1a237e;
+            --color-secondary: #2196f3;
+            --color-darkblue: #01579b;
+            --color-grayish: #f9fafb;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            color: #333;
+            overflow-x: hidden; /* Zapobiega poziomemu przewijaniu przez animacje/AOS */
+            background-color: var(--color-grayish); /* Użyj koloru tła zdefiniowanego w Tailwind/root */
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+#contact {
+background-color: #0f172a
+}
+        /* Logo - opcjonalny styl, jeśli chcesz użyć Pacifico */
+        .logo-text {
+             font-family: 'Montserrat', sans-serif; /* Zostawiamy Montserrat dla spójności */
+        }
+
+        /* Sekcja Hero */
+        .hero-section {
+            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.95) 40%, rgba(255, 255, 255, 0.8) 60%, rgba(255, 255, 255, 0) 100%), url('https://readdy.ai/api/search-image?query=modern%20industrial%20shipyard%20with%20stainless%20steel%20manufacturing%2C%20professional%20workers%20in%20protective%20gear%20working%20on%20metal%20sheets%2C%20clean%20and%20organized%20workspace%2C%20industrial%20machinery%2C%20blue%20tones%2C%20professional%20atmosphere%2C%20high-quality%20manufacturing%20process&width=1920&height=1080&seq=1&orientation=landscape');
+            background-size: cover;
+            background-position: right center;
+            position: relative;
+            padding-top: 7rem; /* Upewnij się, że nie chowa się pod navbarem */
+            padding-bottom: 5rem; /* Upewnij się, że fale mają miejsce */
+        }
+
+        /* Fala na dole sekcji Hero */
+        .wave-decoration {
+            position: absolute;
+            bottom: 0; /* Zmienione z -1px na 0 */
+            left: 0;
+            width: 100%;
+            overflow: hidden;
+            line-height: 0;
+            /* Dodatkowe tło na dole fali, żeby było płynne przejście */
+            background-color: var(--color-grayish); 
+        }
+        .wave-decoration svg {
+            position: relative;
+            display: block;
+            width: calc(100% + 1.3px);
+            height: 70px; /* Wysokość fali */
+        }
+        .wave-decoration .shape-fill {
+            fill: var(--color-grayish); /* Wypełnienie fali kolorem tła następnej sekcji/body */
+        }
+
+        /* Animowany tekst w Hero */
+        .animated-text span {
+             /* display: inline-block; już zdefiniowane w HTML */
+             opacity: 0; /* Początkowo ukryty, AOS go odsłoni */
+        }
+
+        /* Efekt falującego podkreślenia */
+        .wavy-underline {
+            position: relative;
+            display: inline-block; /* Ważne, żeby ::after działał poprawnie na szerokości tekstu */
+        }
+        .wavy-underline::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -5px;
+            height: 3px;
+            width: 100%;
+            /* Lepszy gradient pasujący do palety */
+            background: linear-gradient(90deg, var(--color-primary), var(--color-secondary), var(--color-darkblue), var(--color-secondary), var(--color-primary));
+            background-size: 200% 100%;
+            animation: wave-animation 3s infinite linear;
+            border-radius: 2px;
+        }
+        @keyframes wave-animation {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+        }
+        
+        /* Kolor dla tekstu "dla przemysłu morskiego" */
+        .text-sea {
+             color: var(--color-darkblue); /* Zdefiniowany kolor morski */
+        }
+
+
+        /* Nawigacja */
+        .nav-link {
+            position: relative;
+            padding-bottom: 6px; /* Dodaj padding na dole, żeby podkreślenie miało miejsce */
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0px; /* Zmienione z -4px na 0px */
+            left: 0;
+            background-color: var(--color-secondary);
+            transition: width 0.3s ease-in-out; /* Łagodniejsza animacja */
+        }
+        .nav-link:hover::after, .nav-link.active::after {
+            width: 100%;
+        }
+
+        /* Efekt najechania na karty */
+        .card-hover {
+            transition: transform 0.4s ease-out, box-shadow 0.4s ease-out; /* Łagodniejsza animacja */
+        }
+        .card-hover:hover {
+            transform: translateY(-10px); /* Zwiększone przesunięcie dla lepszego efektu */
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.2), 0 10px 20px -10px rgba(0, 0, 0, 0.1); /* Ulepszony cień */
+        }
+
+        /* Animowany gradient tła dla sekcji Services (sea-bg) */
+        .sea-bg {
+             /* background: linear-gradient(45deg, rgba(1, 87, 155, 0.05), rgba(33, 150, 243, 0.07), rgba(2, 119, 189, 0.05)); */
+             background: linear-gradient(45deg, var(--color-darkblue) 5%, var(--color-secondary) 50%, var(--color-primary) 95%);
+             background-size: 400% 400%;
+             animation: sea-gradient 20s ease infinite; /* Wolniejsza animacja */
+             color: white; /* Zmiana koloru tekstu na biały dla lepszego kontrastu */
+        }
+         .sea-bg h2, .sea-bg p {
+            color: white; /* Upewnij się, że tekst jest biały */
+         }
+         .sea-bg .card-hover {
+             background-color: rgba(255, 255, 255, 0.9); /* Lekko przezroczyste tło dla kart */
+             color: #333; /* Kolor tekstu w karcie */
+         }
+          .sea-bg .card-hover h3 {
+             color: var(--color-primary); /* Kolor nagłówków w karcie */
+          }
+         .sea-bg .steel-icon .ri-2x {
+             color: var(--color-primary); /* Kolor ikon w karcie */
+         }
+
+        @keyframes sea-gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Stylizacja dla ikon - efekt połysku stali (bardziej subtelny) */
+        .steel-icon {
+            position: relative;
+            overflow: hidden;
+            z-index: 1; /* Upewnij się, że ikona jest nad połyskiem */
+             display: inline-flex; /* Ważne dla centrowania i rozmiaru tła */
+             align-items: center;
+             justify-content: center;
+        }
+         /* Usunięto ::before z steel-icon, efekt połysku może być zbyt agresywny */
+
+
+        /* Efekt falowania dla stopki (footer-wave) */
+        .footer-wave {
+            position: relative;
+            /* Dodaj padding na górze, żeby fala była widoczna */
+            padding-top: 70px;
+        }
+        .footer-wave::before {
+            content: '';
+            position: absolute;
+            top: 0px; /* Zmienione z -70px na 0px */
+            left: 0;
+            width: 100%;
+            height: 70px;
+            /* Upewnij się, że kolor fali pasuje do tła stopki */
+             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z' fill='%230f172a'%3E%3C/path%3E%3C/svg%3E"); /* Ustaw kolor fali na kolor tła stopki */
+            background-size: cover;
+            background-position: top; /* Upewnij się, że fala jest na górze */
+        }
+         /* Kolor fill w SVG musi być kodem HEX koloru tła stopki (bg-blue-950 to ok #0f172a) */
+
+        /* Stylizacja pól formularza przy focusie */
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--color-secondary);
+            box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.2); /* Cień pasujący do koloru secondary */
+        }
+
+        /* Stylizacja przewijania strony */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--color-grayish); /* Tło scrollbara pasujące do tła body */
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, var(--color-primary), var(--color-secondary)); /* Gradient zdefiniowany w palecie */
+            border-radius: 6px;
+            border: 3px solid var(--color-grayish); /* Obramowanie koloru tła scrollbara */
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, var(--color-primary), var(--color-darkblue)); /* Gradient na hover */
+        }
+
+        /* Efekt wodny dla zdjęć (subtelniejszy) */
+        .water-effect {
+            position: relative;
+            overflow: hidden;
+            display: block; /* Ważne dla poprawności */
+        }
+        .water-effect img {
+             display: block; /* Zapobiega dodatkowym marginesom pod obrazem */
+             transition: transform 0.7s ease-out; /* Dodaj płynny zoom na hover */
+        }
+        .water-effect::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            /* Ulepszony gradient pasujący do palety */
+            background: linear-gradient(to bottom, rgba(33, 150, 243, 0.0) 0%, rgba(33, 150, 243, 0.1) 50%, rgba(33, 150, 243, 0.2) 100%);
+            opacity: 0;
+            transition: opacity 0.5s ease-out; /* Łagodniejsza animacja */
+            pointer-events: none; /* Aby kliknięcia przeszły do elementu pod spodem */
+        }
+        .water-effect:hover::after {
+            opacity: 1;
+        }
+         .water-effect:hover img {
+             transform: scale(1.1); /* Zoom na hover */
+         }
+
+        /* Animowane tło dla sekcji CTA */
+        .cta-bg {
+            background: linear-gradient(-45deg, var(--color-primary), var(--color-secondary), var(--color-darkblue), var(--color-darkblue));
+            background-size: 400% 400%;
+            animation: cta-gradient 20s ease infinite; /* Wolniejsza animacja */
+             color: white; /* Upewnij się, że tekst jest biały */
+        }
+        @keyframes cta-gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Pulsująca ikona kompasu na stronie (subtelniejsza) */
+        .compass-icon {
+            position: relative;
+             /* animation: pulse-subtle 3s infinite;  Używamy zdefiniowanej w Tailwind config */
+        }
+        .compass-icon i {
+             color: var(--color-secondary); /* Używamy koloru akcentującego */
+        }
+
+        /* Dodatkowe style dla sekcji About Us */
+        .about-img {
+            border-radius: var(--tw-border-radius-lg); /* Użyj zdefiniowanego zaokrąglenia */
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        .about-content h3 {
+             color: var(--color-primary);
+        }
+
+        /* Dodatkowe style dla sekcji Contact */
+         .contact-form {
+             background-color: white;
+             padding: 2rem;
+             border-radius: var(--tw-border-radius-lg);
+             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+         }
+        .contact-info h3 {
+             color: var(--color-primary);
+        }
+        .contact-info p, .contact-info a {
+             color: #555;
+        }
+        .contact-info i {
+             color: var(--color-secondary);
+             margin-right: 0.5rem;
+        }
+         .contact-map {
+             border-radius: var(--tw-border-radius-lg);
+             overflow: hidden;
+             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+         }
+
+
+        /* Style dla sekcji Testimonials */
+        .testimonial-card {
+            background-color: white;
+            padding: 2rem;
+            border-radius: var(--tw-border-radius-lg);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease-out;
+        }
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+        }
+         .testimonial-card i {
+             color: var(--color-secondary);
+             font-size: 2rem;
+             margin-bottom: 1rem;
+         }
+         .testimonial-card blockquote {
+             font-style: italic;
+             color: #555;
+             margin-bottom: 1rem;
+         }
+         .testimonial-card .author {
+             font-weight: 600;
+             color: var(--color-primary);
+         }
+         .client-logos img {
+             max-height: 60px;
+             filter: grayscale(100%); /* Logotypy w skali szarości dla spójności */
+             opacity: 0.6;
+             transition: filter 0.3s ease-out, opacity 0.3s ease-out;
+         }
+         .client-logos img:hover {
+             filter: grayscale(0%); /* Kolorowe na hover */
+             opacity: 1;
+         }
+
+
+        /* Klasa pomocnicza do ukrywania/pokazywania menu mobilnego */
+        .mobile-menu-active {
+            display: block !important;
+        }
+    </style>
+</head>
+<body class="bg-grayish">
+    <header class="fixed w-full bg-white shadow-md z-50 transition-all duration-300" id="navbar">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="#hero" class="text-2xl font-bold text-primary font-['Montserrat'] flex items-center logo-text">
+                <i class="ri-ship-line mr-2 text-secondary compass-icon animate-pulse-subtle"></i> <span>Shipstal</span>
+            </a>
+            
+            <nav class="hidden md:flex space-x-8 items-center">
+                <a href="#hero" class="nav-link active font-medium text-gray-800 hover:text-primary transition-colors">Strona główna</a>
+                <a href="#about" class="nav-link font-medium text-gray-800 hover:text-primary transition-colors">O nas</a>
+                <a href="#services" class="nav-link font-medium text-gray-800 hover:text-primary transition-colors">Oferta</a>
+                <a href="#gallery" class="nav-link font-medium text-gray-800 hover:text-primary transition-colors">Galeria</a>
+                <a href="#contact" class="nav-link font-medium text-gray-800 hover:text-primary transition-colors">Kontakt</a>
+                <a href="#contact" class="ml-4 bg-primary text-white px-6 py-2 rounded-button font-medium hover:bg-primary/90 transition-colors whitespace-nowrap flex items-center shadow-md">
+                    <i class="ri-mail-line mr-2"></i>Zapytaj o ofertę
+                </a>
+            </nav>
+            
+            <button class="md:hidden w-10 h-10 flex items-center justify-center text-gray-700 hover:text-primary transition-colors" id="mobile-menu-button" aria-label="Przełącz menu mobilne">
+                <i class="ri-menu-line ri-2x"></i>
+            </button>
+        </div>
+        <div class="md:hidden bg-white absolute w-full left-0 shadow-md hidden transition-all duration-300" id="mobile-menu">
+            <div class="container mx-auto px-4 py-3 flex flex-col space-y-4">
+                <a href="#hero" class="mobile-nav-link font-medium text-gray-800 hover:text-primary transition-colors py-2 border-b border-gray-100">Strona główna</a>
+                <a href="#about" class="mobile-nav-link font-medium text-gray-800 hover:text-primary transition-colors py-2 border-b border-gray-100">O nas</a>
+                <a href="#services" class="mobile-nav-link font-medium text-gray-800 hover:text-primary transition-colors py-2 border-b border-gray-100">Oferta</a>
+                <a href="#gallery" class="mobile-nav-link font-medium text-gray-800 hover:text-primary transition-colors py-2 border-b border-gray-100">Galeria</a>
+                <a href="#contact" class="mobile-nav-link font-medium text-gray-800 hover:text-primary transition-colors py-2 border-b border-gray-100">Kontakt</a>
+                <a href="#contact" class="bg-primary text-white px-6 py-2 rounded-button font-medium hover:bg-primary/90 transition-colors whitespace-nowrap flex items-center justify-center shadow-md">
+                    <i class="ri-mail-line mr-2"></i>Zapytaj o ofertę
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="hero" class="hero-section pt-32 pb-20 md:pt-40 md:pb-32 relative overflow-hidden">
+            <div class="container mx-auto px-4 relative z-10">
+                <div class="max-w-2xl" data-aos="fade-right" data-aos-duration="1000">
+                    <h1 class="text-4xl md:text-5xl font-bold text-primary mb-6 leading-tight animated-text">
+                        <span class="inline-block" data-aos="fade-up" data-aos-delay="200">Innowacyjne</span>
+                        <span class="inline-block" data-aos="fade-up" data-aos-delay="300">rozwiązania</span>
+                        <span class="inline-block wavy-underline" data-aos="fade-up" data-aos-delay="400">ze stali nierdzewnej</span>
+                        <span class="inline-block text-sea" data-aos="fade-up" data-aos-delay="500">dla przemysłu morskiego</span>
+                    </h1>
+                    <p class="text-lg text-gray-700 mb-8" data-aos="fade-up" data-aos-delay="600">
+                        Dostarczamy najwyższej jakości produkty ze stali nierdzewnej, spełniające najsurowsze wymagania branży morskiej. Ponad 15 lat doświadczenia i setki zadowolonych klientów.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4" data-aos="fade-up" data-aos-delay="700">
+                        <a href="#services" class="bg-primary text-white px-8 py-3 rounded-button font-medium hover:bg-primary/90 transition-all duration-300 text-center whitespace-nowrap hover:scale-105 flex items-center justify-center shadow-md">
+                            <i class="ri-arrow-right-line mr-2"></i>Poznaj ofertę
+                        </a>
+                        <a href="#contact" class="bg-white border-2 border-primary text-primary px-8 py-3 rounded-button font-medium hover:bg-gray-50 transition-all duration-300 text-center whitespace-nowrap hover:shadow-lg flex items-center justify-center">
+                            <i class="ri-customer-service-line mr-2"></i>Skontaktuj się
+                        </a>
+                    </div>
+                </div>
+                <div class="absolute right-4 lg:right-10 bottom-10 lg:bottom-20 hidden lg:block" data-aos="fade-left" data-aos-delay="1200">
+                    <div class="compass-icon">
+                        <i class="ri-compass-3-line" style="font-size: 4rem;"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="wave-decoration">
+                <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                    <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
+                </svg>
+            </div>
+        </section>
+
+        <section id="about" class="py-16 bg-grayish">
+            <div class="container mx-auto px-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                    <div class="about-img" data-aos="fade-right">
+                        <img src="https://readdy.ai/api/search-image?query=professional%20team%20in%20modern%20stainless%20steel%20fabrication%20workshop&width=600&height=400" alt="Zespół Shipstal w warsztacie" class="rounded-lg shadow-lg w-full h-auto">
+                    </div>
+                    <div class="about-content" data-aos="fade-left">
+                        <h2 class="text-3xl font-bold text-primary mb-6 wavy-underline inline-block">Kim jesteśmy</h2>
+                        <p class="text-gray-700 mb-4">
+                            Shipstal to dynamicznie rozwijająca się firma z siedzibą w [Twoje Miasto], specjalizująca się w kompleksowej obróbce i produkcji elementów ze stali nierdzewnej dla wymagającego przemysłu morskiego. Od [Rok założenia] wspieramy naszych klientów, dostarczając rozwiązania charakteryzujące się najwyższą jakością, trwałością i precyzją wykonania.
+                        </p>
+                        <p class="text-gray-700 mb-4">
+                            Nasz zespół składa się z doświadczonych inżynierów i wykwalifikowanych spawaczy oraz operatorów maszyn, którzy posiadają niezbędne certyfikaty i wiedzę, aby sprostać nawet najbardziej skomplikowanym projektom.
+                        </p>
+                        <p class="text-gray-700">
+                            Kładziemy nacisk na innowacyjne technologie, ciągłe doskonalenie procesów produkcyjnych oraz indywidualne podejście do każdego klienta, co pozwala nam budować długotrwałe relacje oparte na zaufaniu.
+                        </p>
+                        <a href="#contact" class="inline-block mt-8 bg-secondary text-white px-6 py-3 rounded-button font-medium hover:bg-secondary/90 transition-colors shadow-md">
+                            <i class="ri-question-line mr-2"></i>Dowiedz się więcej
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <section id="services" class="py-16 sea-bg">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-16" data-aos="fade-up">
+                    <h2 class="text-3xl font-bold mb-4 wavy-underline inline-block">Nasze specjalizacje</h2>
+                    <p class="max-w-2xl mx-auto">Oferujemy kompleksowe usługi w zakresie produkcji i obróbki stali nierdzewnej, dostosowane do specyficznych wymagań przemysłu morskiego.</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="bg-white p-6 rounded-lg shadow-md card-hover" data-aos="fade-up" data-aos-delay="100">
+                        <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6 steel-icon">
+                            <i class="ri-tools-line ri-2x text-primary"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 text-primary">Obróbka CNC</h3>
+                        <p class="text-gray-600">Precyzyjna obróbka stali nierdzewnej z wykorzystaniem najnowocześniejszych maszyn CNC, gwarantująca najwyższą dokładność i powtarzalność wymiarową.</p>
+                    </div>
+                    
+                    <div class="bg-white p-6 rounded-lg shadow-md card-hover" data-aos="fade-up" data-aos-delay="200">
+                        <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6 steel-icon">
+                            <i class="ri-scissors-cut-line ri-2x text-primary"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 text-primary">Cięcie laserowe</h3>
+                        <p class="text-gray-600">Zaawansowane cięcie laserowe stali nierdzewnej umożliwiające tworzenie skomplikowanych kształtów i precyzyjnych detali bez konieczności dalszej obróbki krawędzi.</p>
+                    </div>
+                    
+                    <div class="bg-white p-6 rounded-lg shadow-md card-hover" data-aos="fade-up" data-aos-delay="300">
+                        <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6 steel-icon">
+                            <i class="ri-fire-line ri-2x text-primary"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 text-primary">Spawanie (TIG, MIG/MAG)</h3>
+                        <p class="text-gray-600">Profesjonalne spawanie stali nierdzewnej przez certyfikowanych specjalistów, z dbałością o trwałość spoiny i odporność na korozję w środowisku morskim.</p>
+                    </div>
+                    
+                    <div class="bg-white p-6 rounded-lg shadow-md card-hover" data-aos="fade-up" data-aos-delay="400">
+                        <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6 steel-icon">
+                            <i class="ri-hammer-line ri-2x text-primary"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 text-primary">Gięcie i formowanie</h3>
+                        <p class="text-gray-600">Precyzyjne gięcie na prasach krawędziowych oraz formowanie blach ze stali nierdzewnej, pozwalające uzyskać elementy o złożonych geometriach.</p>
+                    </div>
+                    
+                    <div class="bg-white p-6 rounded-lg shadow-md card-hover" data-aos="fade-up" data-aos-delay="500">
+                        <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6 steel-icon">
+                            <i class="ri-brush-line ri-2x text-primary"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 text-primary">Obróbka powierzchni</h3>
+                        <p class="text-gray-600">Kompleksowe usługi wykończeniowe: szlifowanie, polerowanie (różne wykończenia, np. lustro, satyna) oraz pasywacja, zwiększające odporność na korozję.</p>
+                    </div>
+                    
+                    <div class="bg-white p-6 rounded-lg shadow-md card-hover" data-aos="fade-up" data-aos-delay="600">
+                        <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6 steel-icon">
+                            <i class="ri-building-line ri-2x text-primary"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 text-primary">Montaż konstrukcji</h3>
+                        <p class="text-gray-600">Składanie i montaż gotowych podzespołów oraz większych konstrukcji ze stali nierdzewnej, gotowych do instalacji na jednostkach morskich.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="why-us" class="py-16 bg-grayish relative">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-16" data-aos="fade-up">
+                    <h2 class="text-3xl font-bold text-primary mb-4 wavy-underline inline-block">Dlaczego warto nam zaufać</h2>
+                    <p class="text-gray-600 max-w-2xl mx-auto">Wybierając Shipstal, zyskujesz partnera, który rozumie specyfikę przemysłu morskiego i dostarcza rozwiązania, na których możesz polegać w najtrudniejszych warunkach.</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="text-center" data-aos="fade-up" data-aos-delay="100">
+                        <div class="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6 steel-icon">
+                            <i class="fas fa-certificate text-4xl text-primary"></i> </div>
+                        <h3 class="text-xl font-bold mb-3 text-primary">Certyfikowana Jakość</h3>
+                        <p class="text-gray-600">Nasze procesy produkcyjne spełniają najwyższe standardy jakości, potwierdzone certyfikatami (np. ISO 9001, DNV GL - dodaj swoje faktyczne certyfikaty).</p>
+                    </div>
+                    
+                    <div class="text-center" data-aos="fade-up" data-aos-delay="200">
+                        <div class="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6 steel-icon">
+                             <i class="ri-timer-line ri-3x text-primary"></i> </div>
+                        <h3 class="text-xl font-bold mb-3 text-primary">Terminowość i Niezawodność</h3>
+                        <p class="text-gray-600">Rozumiemy znaczenie terminowości w branży morskiej. Gwarantujemy dostawy zgodne z ustalonym harmonogramem.</p>
+                    </div>
+                    
+                    <div class="text-center" data-aos="fade-up" data-aos-delay="300">
+                        <div class="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6 steel-icon">
+                            <i class="fas fa-ship text-4xl text-primary"></i> </div>
+                        <h3 class="text-xl font-bold mb-3 text-primary">Specjalistyczne Doświadczenie</h3>
+                        <p class="text-gray-600">Ponad [np. 15] lat doświadczenia w pracy z największymi stoczniami i armatorami pozwala nam tworzyć rozwiązania idealnie dopasowane do potrzeb morskich.</p>
+                    </div>
+                    
+                    <div class="text-center" data-aos="fade-up" data-aos-delay="400">
+                        <div class="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6 steel-icon">
+                            <i class="ri-settings-3-line ri-3x text-primary"></i> </div>
+                        <h3 class="text-xl font-bold mb-3 text-primary">Nowoczesny Park Maszynowy</h3>
+                        <p class="text-gray-600">Dysponujemy nowoczesnym sprzętem CNC, laserami i spawalniczym, co zapewnia precyzję i efektywność produkcji.</p>
+                    </div>
+                </div>
+            </div>
+             <div class="absolute top-10 left-10 opacity-5 hidden lg:block">
+                <i class="ri-anchor-line text-darkblue" style="font-size: 8rem; transform: rotate(-25deg);"></i>
+            </div>
+            <div class="absolute bottom-10 right-10 opacity-5 hidden lg:block">
+                <i class="ri-sailboat-line text-darkblue" style="font-size: 8rem; transform: rotate(15deg);"></i>
+            </div>
+        </section>
+
+         <section id="gallery" class="py-20 bg-white">
+            <div class="container mx-auto px-4 text-center">
+                <div class="text-center mb-16" data-aos="fade-up">
+                    <h2 class="text-3xl font-bold text-primary mb-4 wavy-underline inline-block">Nasze realizacje</h2>
+                    <p class="text-gray-600 max-w-2xl mx-auto">Przejrzyj wybrane projekty, które zrealizowaliśmy dla naszych klientów z przemysłu morskiego.</p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="overflow-hidden rounded-lg shadow-md card-hover" data-aos="fade-up" data-aos-delay="100">
+                        <a href="[Link do większego zdjęcia 1]" class="water-effect" data-lightbox="gallery"> <img src="https://readdy.ai/api/search-image?query=stainless%20steel%20handrails%20on%20a%20ship&width=600&height=400&seq=1" alt="Balustrady ze stali nierdzewnej na statku" class="w-full h-64 object-cover">
+                        </a>
+                        <div class="p-6 text-left">
+                            <h3 class="text-xl font-bold mb-2 text-primary">Balustrady okrętowe</h3>
+                            <p class="text-gray-600">Eleganckie i trwałe balustrady spełniające normy bezpieczeństwa morskiego.</p>
+                        </div>
+                    </div>
+                    <div class="overflow-hidden rounded-lg shadow-md card-hover" data-aos="fade-up" data-aos-delay="200">
+                        <a href="[Link do większego zdjęcia 2]" class="water-effect" data-lightbox="gallery">
+                             <img src="https://readdy.ai/api/search-image?query=marine%20stainless%20steel%20fittings&width=600&height=400&seq=2" alt="Elementy montażowe ze stali nierdzewnej" class="w-full h-64 object-cover">
+                        </a>
+                        <div class="p-6 text-left">
+                            <h3 class="text-xl font-bold mb-2 text-primary">Elementy wyposażenia pokładowego</h3>
+                            <p class="text-gray-600">Odporne na warunki atmosferyczne i słoną wodę elementy montażowe i osprzęt.</p>
+                        </div>
+                    </div>
+                    <div class="overflow-hidden rounded-lg shadow-md card-hover" data-aos="fade-up" data-aos-delay="300">
+                        <a href="[Link do większego zdjęcia 3]" class="water-effect" data-lightbox="gallery">
+                             <img src="https://readdy.ai/api/search-image?query=custom%20stainless%20steel%20marine%20structure&width=600&height=400&seq=3" alt="Niestandardowa konstrukcja ze stali nierdzewnej" class="w-full h-64 object-cover">
+                        </a>
+                        <div class="p-6 text-left">
+                            <h3 class="text-xl font-bold mb-2 text-primary">Konstrukcje specjalistyczne</h3>
+                            <p class="text-gray-600">Projektowanie i produkcja nietypowych konstrukcji na indywidualne zamówienie.</p>
+                        </div>
+                    </div>
+                     </div>
+                 <div class="mt-12 text-center" data-aos="fade-up" data-aos-delay="400">
+                     <a href="[Link do strony galerii lub więcej zdjęć]" class="inline-block bg-secondary text-white px-8 py-3 rounded-button font-medium hover:bg-secondary/90 transition-colors shadow-md">
+                            <i class="ri-image-line mr-2"></i>Zobacz więcej realizacji
+                    </a>
+                 </div>
+            </div>
+         </section>
+
+        <section class="py-16 bg-lightblue">
+             <div class="container mx-auto px-4">
+                  <div class="text-center mb-12" data-aos="fade-up">
+                     <h2 class="text-3xl font-bold text-primary mb-4 wavy-underline inline-block">Mówią o nas nasi klienci</h2>
+                     <p class="text-gray-600 max-w-2xl mx-auto">Zaufali nam liderzy branży morskiej. Przeczytaj, co sądzą o współpracy z Shipstal.</p>
+                 </div>
+
+                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+                      <div class="testimonial-card" data-aos="fade-up" data-aos-delay="100">
+                           <i class="fas fa-quote-left"></i>
+                           <blockquote>
+                                Współpraca z Shipstal to gwarancja jakości i terminowości. Elementy ze stali nierdzewnej, które dla nas wykonali, są doskonałej jakości i idealnie pasują do naszych jednostek. Polecamy!
+                           </blockquote>
+                           <p class="author">- Jan Kowalski, Kierownik Produkcji, Stocznia [Nazwa Stoczni]</p>
+                      </div>
+                       <div class="testimonial-card" data-aos="fade-up" data-aos-delay="200">
+                           <i class="fas fa-quote-left"></i>
+                           <blockquote>
+                                Shipstal podchodzi do każdego projektu z niezwykłą precyzją i dbałością o detale. Ich doświadczenie w branży morskiej jest nieocenione. Z pewnością wrócimy z kolejnymi zamówieniami.
+                           </blockquote>
+                           <p class="author">- Piotr Nowak, Właściciel Floty, Armator [Nazwa Firmy]</p>
+                      </div>
+                      </div>
+
+                 <div class="text-center mb-12" data-aos="fade-up" data-aos-delay="300">
+                     <h3 class="text-2xl font-bold text-primary mb-8">Zaufali nam m.in.:</h3>
+                     <div class="flex flex-wrap justify-center items-center gap-8 client-logos">
+                         <img src="https://via.placeholder.com/150x80?text=Logo+Klienta+1" alt="Logo Klienta 1" data-aos="zoom-in" data-aos-delay="400">
+                         <img src="https://via.placeholder.com/150x80?text=Logo+Klienta+2" alt="Logo Klienta 2" data-aos="zoom-in" data-aos-delay="500">
+                         <img src="https://via.placeholder.com/150x80?text=Logo+Klienta+3" alt="Logo Klienta 3" data-aos="zoom-in" data-aos-delay="600">
+                         <img src="https://via.placeholder.com/150x80?text=Logo+Klienta+4" alt="Logo Klienta 4" data-aos="zoom-in" data-aos-delay="700">
+                          </div>
+                 </div>
+             </div>
+        </section>
+
+
+        <section id="cta" class="py-20 cta-bg text-center overflow-hidden">
+            <div class="container mx-auto px-4 relative z-10" data-aos="zoom-in">
+                <h2 class="text-4xl font-bold mb-6">Gotowy na współpracę?</h2>
+                <p class="text-lg mb-10 max-w-2xl mx-auto">Skontaktuj się z nami już dziś, aby omówić szczegóły Twojego projektu i otrzymać spersonalizowaną ofertę. Jesteśmy gotowi sprostać Twoim wyzwaniom!</p>
+                <a href="#contact" class="inline-block bg-white text-primary px-8 py-4 rounded-button font-semibold text-lg hover:bg-gray-200 transition-colors shadow-lg">
+                    <i class="ri-mail-open-line mr-2"></i>Skontaktuj się z nami!
+                </a>
+            </div>
+             <div class="absolute inset-0 opacity-10 flex items-center justify-around pointer-events-none">
+                 <i class="ri-ship-line text-white" style="font-size: 12rem; transform: rotate(-10deg);"></i>
+                 <i class="ri-tools-line text-white" style="font-size: 12rem; transform: rotate(5deg);"></i>
+                  <i class="ri-anchor-line text-white" style="font-size: 12rem; transform: rotate(20deg);"></i>
+             </div>
+        </section>
+
+        <section id="contact" class="py-20 bg-grayish relative">
+             <div class="container mx-auto px-4">
+                 <div class="text-center mb-16" data-aos="fade-up">
+                    <h2 class="text-3xl font-bold text-primary mb-4 wavy-underline inline-block">Kontakt</h2>
+                    <p class="text-gray-600 max-w-2xl mx-auto">Masz pytania lub chcesz złożyć zapytanie ofertowe? Skontaktuj się z nami!</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                     <div class="contact-form" data-aos="fade-right">
+                         <h3 class="text-2xl font-bold mb-6 text-primary">Wyślij do nas wiadomość</h3>
+                         <form action="/send-message" method="POST" class="space-y-6">
+                             <div>
+                                 <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Imię i Nazwisko / Nazwa firmy</label>
+                                 <input type="text" id="name" name="name" required class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-secondary focus:border-secondary transition-colors" placeholder="Twoje imię/Nazwa firmy">
+                             </div>
+                             <div>
+                                 <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Adres email</label>
+                                 <input type="email" id="email" name="email" required class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-secondary focus:border-secondary transition-colors" placeholder="Twój adres email">
+                             </div>
+                             <div>
+                                 <label for="subject" class="block text-sm font-medium text-gray-700 mb-1">Temat</label>
+                                 <input type="text" id="subject" name="subject" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-secondary focus:border-secondary transition-colors" placeholder="Temat wiadomości">
+                             </div>
+                             <div>
+                                 <label for="message" class="block text-sm font-medium text-gray-700 mb-1">Treść wiadomości</label>
+                                 <textarea id="message" name="message" rows="5" required class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-secondary focus:border-secondary transition-colors" placeholder="Twoja wiadomość..."></textarea>
+                             </div>
+                             <div>
+                                 <button type="submit" class="w-full bg-primary text-white px-6 py-3 rounded-button font-medium hover:bg-primary/90 transition-colors shadow-md flex items-center justify-center">
+                                     <i class="ri-send-plane-line mr-2"></i>Wyślij wiadomość
+                                 </button>
+                             </div>
+                         </form>
+                     </div>
+
+                     <div class="space-y-8" data-aos="fade-left">
+                         <div class="contact-info">
+                             <h3 class="text-2xl font-bold mb-4 text-primary">Dane kontaktowe</h3>
+                             <p class="flex items-center mb-3"><i class="ri-map-pin-line"></i> [Pełny adres firmy, np. ul. Morska 1, 84-200 Wejherowo]</p>
+                             <p class="flex items-center mb-3"><i class="ri-phone-line"></i> [Numer telefonu, np. +48 123 456 789]</p>
+                             <p class="flex items-center mb-3"><i class="ri-mail-line"></i> <a href="mailto:[email@twojafirma.pl]">[email@twojafirma.pl]</a></p>
+                              <div class="flex mt-6 space-x-4 text-gray-700">
+                                 <a href="[Link do Facebooka]" target="_blank" class="hover:text-primary transition-colors" aria-label="Facebook"><i class="ri-facebook-box-fill ri-2x"></i></a>
+                                 <a href="[Link do LinkedIn]" target="_blank" class="hover:text-primary transition-colors" aria-label="LinkedIn"><i class="ri-linkedin-box-fill ri-2x"></i></a>
+                                 </div>
+                         </div>
+
+                         <div class="contact-map">
+                              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1dYOUR_LATITUDE_LONGITUDE_ZOOM!2dYOUR_LONGITUDE!3dYOUR_LATITUDE!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zYOUR_COMPANY_NAME!5e0!3m2!1spl!2spl!4vSOME_TIMESTAMP" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                             </div>
+                     </div>
+                </div>
+             </div>
+        </section>
+
+
+    </main>
+
+    <footer class="bg-blue-950 text-white py-10 px-6 relative footer-wave">
+        <div class="container mx-auto text-center md:text-left grid grid-cols-1 md:grid-cols-3 gap-8">
+             <div data-aos="fade-up">
+                  <a href="#hero" class="text-2xl font-bold text-white font-['Montserrat'] flex items-center justify-center md:justify-start mb-4 logo-text">
+                     <i class="ri-ship-line mr-2 text-secondary"></i>
+                     <span>Shipstal</span>
+                 </a>
+                 <p class="text-gray-300 text-sm max-w-xs mx-auto md:mx-0">
+                     Specjaliści w produkcji i obróbce stali nierdzewnej dla przemysłu morskiego. Jakość, której możesz zaufać na morzu.
+                 </p>
+             </div>
+              <div data-aos="fade-up" data-aos-delay="100">
+                  <h3 class="text-xl font-semibold mb-4 text-secondary">Szybkie linki</h3>
+                  <ul class="space-y-2 text-gray-300 text-sm">
+                      <li><a href="#hero" class="hover:text-white transition-colors">Strona główna</a></li>
+                      <li><a href="#about" class="hover:text-white transition-colors">O nas</a></li>
+                      <li><a href="#services" class="hover:text-white transition-colors">Oferta</a></li>
+                      <li><a href="#gallery" class="hover:text-white transition-colors">Galeria</a></li>
+                      <li><a href="#contact" class="hover:text-white transition-colors">Kontakt</a></li>
+                  </ul>
+              </div>
+               <div data-aos="fade-up" data-aos-delay="200">
+                    <h3 class="text-xl font-semibold mb-4 text-secondary">Kontakt</h3>
+                    <p class="text-gray-300 text-sm flex items-center justify-center md:justify-start mb-2"><i class="ri-map-pin-line mr-2"></i> [Twój adres]</p>
+                    <p class="text-gray-300 text-sm flex items-center justify-center md:justify-start mb-2"><i class="ri-phone-line mr-2"></i> [Twój numer telefonu]</p>
+                    <p class="text-gray-300 text-sm flex items-center justify-center md:justify-start mb-4"><i class="ri-mail-line mr-2"></i> <a href="mailto:[email@twojafirma.pl]" class="hover:text-white transition-colors">[email@twojafirma.pl]</a></p>
+                    <div class="flex justify-center md:justify-start space-x-4 text-gray-300">
+                         <a href="[Link do Facebooka]" target="_blank" class="hover:text-white transition-colors" aria-label="Facebook footer"><i class="ri-facebook-box-fill ri-2x"></i></a>
+                         <a href="[Link do LinkedIn]" target="_blank" class="hover:text-white transition-colors" aria-label="LinkedIn footer"><i class="ri-linkedin-box-fill ri-2x"></i></a>
+                         </div>
+               </div>
+        </div>
+        <div class="container mx-auto text-center mt-8 pt-8 border-t border-gray-700">
+            <p class="text-gray-500 text-sm">&copy; 2025 Shipstal. Wszelkie prawa zastrzeżone. | <a href="#" class="hover:underline text-gray-500">Polityka Prywatności</a></p>
+             </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 1000, // Czas trwania animacji w ms
+            easing: 'ease-out', // Rodzaj animacji
+            once: true, // Animuj tylko raz przy przewinięciu do elementu
+            mirror: false // Czy elementy powinny animować się ponownie po przewinięciu w górę?
+        });
+
+        // -------- SKRYPT DLA MENU MOBILNEGO --------
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileNavLinks = mobileMenu.querySelectorAll('.mobile-nav-link'); // Pobierz wszystkie linki w menu mobilnym
+
+        mobileMenuButton.addEventListener('click', () => {
+            // Przełącz klasę 'hidden' lub niestandardową klasę do pokazywania/ukrywania
+            mobileMenu.classList.toggle('hidden');
+             // Opcjonalnie: Zmień ikonę przycisku
+             const menuIcon = mobileMenuButton.querySelector('i');
+             if (mobileMenu.classList.contains('hidden')) {
+                 menuIcon.classList.remove('ri-close-line');
+                 menuIcon.classList.add('ri-menu-line');
+             } else {
+                 menuIcon.classList.remove('ri-menu-line');
+                 menuIcon.classList.add('ri-close-line');
+             }
+        });
+
+        // Zamknij menu mobilne po kliknięciu linku w menu
+        mobileNavLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                // Przywróć ikonę menu
+                 const menuIcon = mobileMenuButton.querySelector('i');
+                 menuIcon.classList.remove('ri-close-line');
+                 menuIcon.classList.add('ri-menu-line');
+            });
+        });
+
+        // -------- SMOOTH SCROLLING DLA KOTWIC --------
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+
+                if (targetElement) {
+                    // Oblicz pozycję docelową, uwzględniając wysokość paska nawigacyjnego
+                    const navbarHeight = document.getElementById('navbar').offsetHeight;
+                    const targetPosition = targetElement.getBoundingClientRect().top + window.scrollY - navbarHeight;
+
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+
+                    // Opcjonalnie: Zaktualizuj adres URL po przewinięciu (dla linków desktopowych)
+                    if (!this.classList.contains('mobile-nav-link')) {
+                         history.pushState(null, null, targetId);
+                    }
+                }
+            });
+        });
+
+         // -------- AKTYWNA KLASA DLA LINKÓW NAVIGACYJNYCH PRZY PRZEWIJANIU --------
+         const sections = document.querySelectorAll('main section');
+         const navLinks = document.querySelectorAll('.nav-link');
+         const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+
+         function updateActiveNavLink() {
+             let current = '';
+             sections.forEach(section => {
+                 const sectionTop = section.offsetTop - document.getElementById('navbar').offsetHeight - 50; // Ustaw próg
+                 const sectionHeight = section.clientHeight;
+                 if (pageYOffset >= sectionTop && pageYOffset < sectionTop + sectionHeight) {
+                     current = '#' + section.getAttribute('id');
+                 }
+             });
+
+             navLinks.forEach(link => {
+                 link.classList.remove('active');
+                 if (link.getAttribute('href') === current) {
+                     link.classList.add('active');
+                 } else if (current === '' && link.getAttribute('href') === '#hero') {
+                      // Jeśli jesteśmy na samej górze, ustaw "Strona główna" jako aktywną
+                      link.classList.add('active');
+                 }
+             });
+             mobileNavLinks.forEach(link => {
+                 link.classList.remove('active');
+                 if (link.getAttribute('href') === current) {
+                     link.classList.add('active');
+                 } else if (current === '' && link.getAttribute('href') === '#hero') {
+                      link.classList.add('active');
+                 }
+             });
+         }
+
+         window.addEventListener('scroll', updateActiveNavLink);
+         window.addEventListener('load', updateActiveNavLink); // Ustaw aktywny link po załadowaniu strony (np. jeśli strona została odświeżona na innej sekcji)
+
+
+        // -------- ZMIANA WYSOKOŚCI NAVBARU PRZY PRZEWIJANIU (opcjonalne) --------
+        const navbar = document.getElementById('navbar');
+        const heroSection = document.getElementById('hero'); // Sekcja Hero
+
+        function updateNavbarHeight() {
+            if (window.scrollY > (heroSection ? heroSection.offsetHeight / 2 : 100)) { // Zmniejsz navbar po przewinięciu połowy sekcji Hero lub 100px
+                navbar.classList.add('py-2'); // Mniejszy padding
+                navbar.classList.remove('py-3'); // Usunięcie większego paddingu
+            } else {
+                navbar.classList.add('py-3'); // Większy padding
+                navbar.classList.remove('py-2'); // Usunięcie mniejszego paddingu
+            }
+        }
+
+        window.addEventListener('scroll', updateNavbarHeight);
+        window.addEventListener('load', updateNavbarHeight); // Sprawdź wysokość po załadowaniu
+    </script>
+	 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init({
+      duration: 800,
+      once: true
+    });
+  </script>
+    </body>
+</html>
